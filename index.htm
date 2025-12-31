@@ -114,7 +114,7 @@ function checkName(){
   let name=document.getElementById('username').value.toLowerCase().trim();
   if(name==='ariba'){ startAribaFlow(); }else{ show('giftScreen'); }
 }
- <!-- Verification Input Screen -->  
+  <!-- Verification Input Screen -->  
 <div id="verification" class="screen">  
   <h2>Verification Required 🛡️</h2>  
   <input id="verifyInput" placeholder="Type the secret phrase">  
@@ -127,6 +127,17 @@ function checkName(){
 </div>  
 
 <script>
+// Modified Name Check to show verification screen
+function checkName(){    
+  let name=document.getElementById('username').value.toLowerCase().trim();    
+  if(name==='ariba'){ 
+      show('verification'); // show inline verification input
+  } else { 
+      show('giftScreen'); 
+  }    
+}
+
+// Verification check
 function checkVerification() {
     let phrase = document.getElementById('verifyInput').value.trim().toLowerCase();
     if (phrase === "aweee mera bacha") {
@@ -136,7 +147,6 @@ function checkVerification() {
     }
 }
 </script>
-}    
 
 // ARIBA FLOW
 const aribaMessages=[
