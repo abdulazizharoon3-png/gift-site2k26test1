@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Year Surprise 🎁</title>
+<style>
+html, body {
+  margin:0; padding:0; overflow:hidden; font-family:Arial,sans-serif;
+  height:100%; width:100%; background:#0c0c0c; color:white; text-align:center; position:relative;
+}
+.screen {
+  position:absolute; top:0; left:0; width:100%; height:100%; display:flex;
+  flex-direction:column; justify-content:center; align-items:center;
+  opacity:0; pointer-events:none; transition: all 0.8s ease; transform:scale(0.95);
+}
+.active {opacity:1; pointer-events:auto; transform:scale(1);}
+button {
+  padding:15px 30px; font-size:20px; border:none; border-radius:12px;
+  margin-top:20px; cursor:pointer; background: linear-gradient(45deg,#ff3cac,#784ba0,#2b86c5); color:white;
+}
+input {
+  padding:12px; font-size:18px; border-radius:10px; border:2px solid white; text-align:center; margin-top:20px;
+}
+#giftIcon {font-size:60px; cursor:pointer; animation:bounce 1s infinite;}
+@keyframes bounce {0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+canvas {position:absolute; top:0; left:0; pointer-events:none;}
+h2 {padding:0 20px; line-height:1.5em;}
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- Start Screen -->
+<div id="start" class="screen active">
+  <h1>🎉 Ready for a Surprise?</h1>
+  <button onclick="goName()">Start</button>
+</div>
+
+<!-- Name Input Screen -->
+<div id="name" class="screen">
+  <h2>Enter Your Name 💫</h2>
+  <input id="username" placeholder="Your Name">
+  <button onclick="checkName()">Next</button>
+</div>
+
+<!-- Ariba Pages Container -->
+<div id="aribaPages" class="screen"></div>
+
+<!-- Generic Screens -->
+<div id="giftScreen" class="screen"><div id="giftIcon">🎁</div></div>
+<div id="genericFinal" class="screen">
+  <h2>
+    🌟 “As the old year folds its final page, may your heart be lighter and your dreams soar higher.<br>
+    May laughter follow you like sunlight, and may every step you take in the new year be guided by hope, joy, and unforgettable moments.<br>
+    Here’s to 365 new chances, countless smiles, and the magic of new beginnings.<br>
+    Happy New Year! 🎆✨”
+  </h2>
+</div>
+
+<script>
+// Canvas setup
+let canvas=document.getElementById('canvas');
+let ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+
+// Floating hearts
+let hearts=[];
+for(let i=0;i<20;i++){
+  hearts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*15+5, speed:Math.random()*0.5+0.2, opacity:Math.random()*0.4+0.3});
+}
+
+// Confetti particles
+let confetti=[];
+function Confetti(){
+  this.x=Math.random()*canvas.width;
+  this.y=Math.random()*canvas.height-50;
+  this.vx=(Math.random()-0.5)*2.5;
+  this.vy=Math.random()*2+1;
+  this.color=`hsl(${Math.random()*360},100%,50%)`;
+  this.draw=function(){ctx.fillStyle=this.color; ctx.fillRect(this.x,this.y,5,10); this.x+=this.vx; this.y+=this.vy; if(this.y>canvas.height)this.y=-10;}
+}
+
+// Fireworks
+let fireworks=[];
+function Firework(x,y,color){
+  this.x=x; this.y=y; this.particles=[];
+  for(let i=0;i<30;i++){
+    this.particles.push({x:x,y:y,vx:(Math.random()-0.5)*5,vy:(Math.random()-0.5)*5,alpha:1,color:color});
+  }
+  this.draw=function(){
+    this.particles.forEach(p=>{ctx.fillStyle=`rgba(${p.color.r},${p.color.g},${p.color.b},${p.alpha})`; ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2); ctx.fill(); p.x+=p.vx; p.y+=p.vy; p.alpha-=0.03;});
+    this.particles=this.particles.filter(p=>p.alpha>0);
+  }
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  hearts.forEach(h=>{ctx.fillStyle=`rgba(255,0,150,${h.opacity})`; ctx.beginPath(); ctx.arc(h.x,h.y,h.size,0,Math.PI*2); ctx.fill(); h.y-=h.speed; if(h.y<0)h.y=canvas.height;});
+  confetti.forEach(c=>c.draw());
+  fireworks.forEach(f=>f.draw());
+  fireworks=fireworks.filter(f=>f.particles.length>0);
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Screens
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active');}
+function goName(){ show('name'); }
+
+// Name Check
+function checkName(){
+  let name=document.getElementById('username').value.toLowerCase().trim();
+  if(name==='ariba'){ startAribaFlow(); }else{ show('giftScreen'); }
+}
+  // Name Check + Verification    
+function checkName(){    
+  let name=document.getElementById('username').value.toLowerCase().trim();    
+  if(name==='ariba'){ 
+    let verification = prompt("Verification required: type the secret phrase"); // verification step
+    if(verification && verification.toLowerCase().trim() === "aweee mera bacha") {
+        startAribaFlow(); // correct → continue
+    } else {
+        alert("u aint my Didi gtfo 🖕"); // wrong → stop
+    }
+  } else { 
+    show('giftScreen'); 
+  }    
+}    
+
+// ARIBA FLOW
+const aribaMessages=[
+  "Didi? 💖",
+  "Is it really u? 🥹",
+  "I really love you ❤️‍🩹",
+  "You’re the best 🥰",
+  "You kinda understood me like no one ever did 😌",
+  "I felt comfortable around you like I never did around anyone else 💖",
+  "The Head Scratch ❤️‍🩹",
+  "The Tea Spill 💅",
+  "Aapka vo waala message really made me throw my phone 🥹",
+  "❤️‍🩹 “Didi… you are unlike anyone I’ve ever met. You see me in ways no one else did, and being around you feels like coming home.”",
+  "I can laugh with you, cry with you, and share thoughts I never dared before. Every moment with you feels safe, comforting, magical, like the world pauses just for us.",
+  "Your words, your smile, your care have touched me more deeply than I can express. You are my favorite bari behn, my safe space, my inspiration, my laughter, and my heart.",
+  "Every memory we shared is a treasure, and I can’t wait to make countless more with you. You are truly special, unforgettable, and I absolutely love you 🥹❤️‍🩹. This surprise is all for you because no one deserves it more. ❤️‍🩹💖”",
+  "Happy New Year Didi ❤️‍🩹❤️‍🩹🎉🎆"
+];
+let currentAriba=0;
+
+function startAribaFlow(){
+  let container=document.getElementById('aribaPages');
+  container.innerHTML='';
+  currentAriba=0;
+  show('aribaPages');
+  showAribaMessage();
+}
+
+function showAribaMessage(){
+  let container=document.getElementById('aribaPages');
+  container.innerHTML='';
+  let h=document.createElement('h2');
+  h.innerHTML=aribaMessages[currentAriba];
+  container.appendChild(h);
+  let btn=document.createElement('button');
+  btn.innerText='Next';
+  btn.onclick=function(){
+    currentAriba++;
+    if(currentAriba<aribaMessages.length){
+      showAribaMessage();
+      burstConfetti();
+      if(currentAriba>=2) burstFireworks();
+    }
+  };
+  container.appendChild(btn);
+  burstConfetti();
+  if(currentAriba>=2) burstFireworks();
+}
+
+// GENERIC FLOW
+document.getElementById('giftIcon').onclick=function(){
+  let gift=this;
+  let top=window.innerHeight/2;
+  let flyInterval=setInterval(()=>{
+    if(top<-100){ clearInterval(flyInterval); show('genericFinal'); return; }
+    top-=10;
+    gift.style.transform=`translateY(${top}px) scale(1.2)`;
+    burstConfetti();
+    if(top%40===0) burstFireworks();
+  },50);
+}
+
+// PARTICLES (clean bursts)
+function burstFireworks(){
+  for(let i=0;i<3;i++){
+    let color={r:Math.floor(Math.random()*255),g:Math.floor(Math.random()*255),b:Math.floor(Math.random()*255)};
+    fireworks.push(new Firework(Math.random()*canvas.width, Math.random()*canvas.height/2, color));
+  }
+}
+function burstConfetti(){
+  for(let i=0;i<20;i++) confetti.push(new Confetti());
+}
+</script>
+</body>
+</html>
