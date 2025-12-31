@@ -45,6 +45,18 @@ h2 {padding:0 20px; line-height:1.5em;}
   <button onclick="checkName()">Next</button>
 </div>
 
+<!-- Verification Screen -->
+<div id="verification" class="screen">
+  <h2>Verification Required 🛡️</h2>
+  <input id="verifyInput" placeholder="Type the secret phrase">
+  <button onclick="checkVerification()">Verify</button>
+</div>
+
+<!-- Wrong Verification Screen -->
+<div id="wrongVerify" class="screen">
+  <h2>u aint my Didi gtfo 🖕</h2>
+</div>
+
 <!-- Ariba Pages Container -->
 <div id="aribaPages" class="screen"></div>
 
@@ -112,46 +124,26 @@ function goName(){ show('name'); }
 // Name Check
 function checkName(){
   let name=document.getElementById('username').value.toLowerCase().trim();
-  if(name==='ariba'){ startAribaFlow(); }else{ show('giftScreen'); }
-}
-  <!-- Verification Input Screen -->  
-<div id="verification" class="screen">  
-  <h2>Verification Required 🛡️</h2>  
-  <input id="verifyInput" placeholder="Type the secret phrase">  
-  <button onclick="checkVerification()">Verify</button>  
-</div>  
-
-<!-- Wrong Verification Screen -->  
-<div id="wrongVerify" class="screen">  
-  <h2>u aint my Didi gtfo 🖕</h2>  
-</div>  
-
-<script>
-// Modified Name Check to show verification screen
-function checkName(){    
-  let name=document.getElementById('username').value.toLowerCase().trim();    
   if(name==='ariba'){ 
-      show('verification'); // show inline verification input
+      show('verification'); // show verification screen inline
   } else { 
       show('giftScreen'); 
-  }    
+  }
 }
 
-// Verification check
+// Verification Check
 function checkVerification() {
     let phrase = document.getElementById('verifyInput').value.trim().toLowerCase();
-    if (phrase === "aweee mera bacha") {
-        startAribaFlow(); // correct input → proceed
+    if(phrase === "aweee mera bacha") {
+        startAribaFlow(); // correct → proceed
     } else {
-        show('wrongVerify'); // wrong input → show screen
+        show('wrongVerify'); // wrong → show screen
     }
 }
-</script>
 
 // ARIBA FLOW
 const aribaMessages=[
-  "Didi? 💖",
-  "Is it really u? 🥹",
+  "Is it actually you?",
   "I really love you ❤️‍🩹",
   "You’re the best 🥰",
   "You kinda understood me like no one ever did 😌",
