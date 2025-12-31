@@ -114,19 +114,28 @@ function checkName(){
   let name=document.getElementById('username').value.toLowerCase().trim();
   if(name==='ariba'){ startAribaFlow(); }else{ show('giftScreen'); }
 }
-  // Name Check + Verification    
-function checkName(){    
-  let name=document.getElementById('username').value.toLowerCase().trim();    
-  if(name==='ariba'){ 
-    let verification = prompt("Verification required: type the secret phrase"); // verification step
-    if(verification && verification.toLowerCase().trim() === "aweee mera bacha") {
-        startAribaFlow(); // correct → continue
+ <!-- Verification Input Screen -->  
+<div id="verification" class="screen">  
+  <h2>Verification Required 🛡️</h2>  
+  <input id="verifyInput" placeholder="Type the secret phrase">  
+  <button onclick="checkVerification()">Verify</button>  
+</div>  
+
+<!-- Wrong Verification Screen -->  
+<div id="wrongVerify" class="screen">  
+  <h2>u aint my Didi gtfo 🖕</h2>  
+</div>  
+
+<script>
+function checkVerification() {
+    let phrase = document.getElementById('verifyInput').value.trim().toLowerCase();
+    if (phrase === "aweee mera bacha") {
+        startAribaFlow(); // correct input → proceed
     } else {
-        alert("u aint my Didi gtfo 🖕"); // wrong → stop
+        show('wrongVerify'); // wrong input → show screen
     }
-  } else { 
-    show('giftScreen'); 
-  }    
+}
+</script>
 }    
 
 // ARIBA FLOW
